@@ -1,0 +1,55 @@
+// Prisma Schema - Mega Jr. Sistema de Gestão
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Member {
+  id          Int          @id @default(autoincrement())
+  name        String
+  email       String       @unique
+  role        String       // cargo: ex. "Desenvolvedor", "Designer"
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  allocations Allocation[]
+}
+
+model Project {
+  id          Int          @id @default(autoincrement())
+  name        String
+  description String
+  status      String       @default("Planejamento") // Planejamento | Ativo | Pausado | Concluído
+  startDate   DateTime
+  endDate     DateTime?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  allocations Allocation[]
+}
+
+model Allocation {
+  id        Int     @id @default(autoincrement())
+  memberId  Int
+  projectId Int
+  role      String  // papel do membro no projeto: ex. "Líder", "Dev"
+  workload  Int     // carga horária semanal em horas
+  createdAt DateTime @default(now())
+
+  member  Member  @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([memberId, projectId]) // um membro só pode estar alocado uma vez por projeto
+}

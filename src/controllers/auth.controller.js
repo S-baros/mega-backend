@@ -1,11 +1,9 @@
-// src/controllers/auth.controller.js
 const { PrismaClient } = require('@prisma/client')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
 const prisma = new PrismaClient()
 
-// POST /auth/login
 async function login(req, res) {
   const { email, password } = req.body
 
@@ -34,7 +32,6 @@ async function login(req, res) {
   })
 }
 
-// POST /auth/register
 async function register(req, res) {
   const { name, email, password } = req.body
 

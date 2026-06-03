@@ -1,8 +1,6 @@
-// src/controllers/allocations.controller.js
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
-// GET /allocations
 async function listar(req, res) {
   const allocations = await prisma.allocation.findMany({
     include: {
@@ -14,7 +12,6 @@ async function listar(req, res) {
   return res.json(allocations)
 }
 
-// POST /allocations
 async function criar(req, res) {
   const { memberId, projectId, role, workload } = req.body
 
@@ -22,14 +19,12 @@ async function criar(req, res) {
     return res.status(400).json({ error: 'memberId, projectId, role e workload são obrigatórios.' })
   }
 
-  // Verifica se membro e projeto existem
   const member = await prisma.member.findUnique({ where: { id: Number(memberId) } })
   if (!member) return res.status(404).json({ error: 'Membro não encontrado.' })
 
   const project = await prisma.project.findUnique({ where: { id: Number(projectId) } })
   if (!project) return res.status(404).json({ error: 'Projeto não encontrado.' })
 
-  // Verifica duplicata
   const jaAlocado = await prisma.allocation.findUnique({
     where: { memberId_projectId: { memberId: Number(memberId), projectId: Number(projectId) } },
   })
@@ -50,7 +45,6 @@ async function criar(req, res) {
   return res.status(201).json(allocation)
 }
 
-// PUT /allocations/:id
 async function atualizar(req, res) {
   const { id } = req.params
   const { role, workload } = req.body
@@ -65,7 +59,6 @@ async function atualizar(req, res) {
   return res.json(allocation)
 }
 
-// DELETE /allocations/:id
 async function deletar(req, res) {
   const { id } = req.params
 

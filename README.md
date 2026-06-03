@@ -1,21 +1,21 @@
-# 🦆 Mega Jr. — Backend
+# mega-projeto — Backend
 
-API REST do Sistema de Gestão de Projetos e Alocação de Membros.
+API REST do Sistema de Gestão de Projetos e Alocação de Membros da Mega Jr.
 
 ## Stack
 
-- **Node.js** + **Express**
-- **PostgreSQL** (banco de dados)
-- **Prisma ORM** (acesso ao banco)
-- **JWT** (autenticação)
-- **Swagger** (documentação da API)
+- Node.js + Express
+- PostgreSQL
+- Prisma ORM
+- JWT
+- Swagger
 
 ## Pré-requisitos
 
-- [Node.js](https://nodejs.org/) v18 ou superior
-- [PostgreSQL](https://www.postgresql.org/) instalado e rodando
+- Node.js v18+
+- PostgreSQL
 
-## Como rodar localmente
+## Como rodar
 
 ### 1. Instale as dependências
 
@@ -25,38 +25,30 @@ npm install
 
 ### 2. Configure o `.env`
 
-Copie o arquivo de exemplo e preencha com suas credenciais:
-
 ```bash
 cp .env.example .env
 ```
 
-Edite o `.env`:
+Preencha o `.env` com suas credenciais:
 
 ```env
 DATABASE_URL="postgresql://postgres:sua_senha@localhost:5432/mega_db"
-JWT_SECRET="troque_por_uma_chave_secreta"
+JWT_SECRET="sua_chave_secreta"
 JWT_EXPIRES_IN="7d"
 PORT=3000
 ```
 
-### 3. Crie e migre o banco
+### 3. Rode as migrations
 
 ```bash
 npx prisma migrate dev --name init
 ```
 
-### 4. Popule com dados de exemplo (opcional)
+### 4. Dados iniciais (opcional)
 
 ```bash
 npm run db:seed
 ```
-
-Isso cria:
-- Usuário admin: `admin@soumega.com` / senha: `admin123`
-- 3 membros de exemplo
-- 2 projetos de exemplo
-- Alocações de exemplo
 
 ### 5. Inicie o servidor
 
@@ -64,14 +56,13 @@ Isso cria:
 npm run dev
 ```
 
-Acesse:
 - API: http://localhost:3000
 - Swagger: http://localhost:3000/api-docs
 
 ## Endpoints
 
-| Método | Rota | Descrição | Auth? |
-|--------|------|-----------|-------|
+| Método | Rota | Descrição | Auth |
+|--------|------|-----------|------|
 | POST | /auth/login | Login | ❌ |
 | POST | /auth/register | Cadastro | ❌ |
 | GET | /members | Lista membros | ✅ |
@@ -86,16 +77,6 @@ Acesse:
 | POST | /allocations | Cria alocação | ✅ |
 | PUT | /allocations/:id | Atualiza alocação | ✅ |
 | DELETE | /allocations/:id | Remove alocação | ✅ |
-| GET | /dashboard | Dados do painel | ✅ |
+| GET | /dashboard | Painel gerencial | ✅ |
 
-> ✅ Rotas protegidas exigem header: `Authorization: Bearer <token>`
-
-## Commits semânticos
-
-Este projeto segue commits semânticos:
-
-- `feat:` nova funcionalidade
-- `fix:` correção de bug
-- `docs:` documentação
-- `refactor:` refatoração
-- `chore:` configuração/dependências
+Rotas com ✅ exigem header: `Authorization: Bearer <token>`

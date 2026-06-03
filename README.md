@@ -77,6 +77,6 @@ npm run dev
 | POST | /allocations | Cria alocação | ✅ |
 | PUT | /allocations/:id | Atualiza alocação | ✅ |
 | DELETE | /allocations/:id | Remove alocação | ✅ |
-| GET | /dashboard | Painel gerencial | ✅ |
+| GET | /dashboard | Painel gerencial | ✅ ||
 
 Rotas com ✅ exigem header: `Authorization: Bearer <token>`

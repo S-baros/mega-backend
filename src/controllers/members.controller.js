@@ -1,8 +1,6 @@
-// src/controllers/members.controller.js
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
-// GET /members
 async function listar(req, res) {
   const members = await prisma.member.findMany({
     include: {
@@ -15,22 +13,16 @@ async function listar(req, res) {
   return res.json(members)
 }
 
-// GET /members/:id
 async function buscarPorId(req, res) {
   const { id } = req.params
   const member = await prisma.member.findUnique({
     where: { id: Number(id) },
-    include: {
-      allocations: {
-        include: { project: true },
-      },
-    },
+    include: { allocations: { include: { project: true } } },
   })
   if (!member) return res.status(404).json({ error: 'Membro não encontrado.' })
   return res.json(member)
 }
 
-// POST /members
 async function criar(req, res) {
   const { name, email, role } = req.body
   if (!name || !email || !role) {
@@ -44,7 +36,6 @@ async function criar(req, res) {
   return res.status(201).json(member)
 }
 
-// PUT /members/:id
 async function atualizar(req, res) {
   const { id } = req.params
   const { name, email, role } = req.body
@@ -59,7 +50,6 @@ async function atualizar(req, res) {
   return res.json(member)
 }
 
-// DELETE /members/:id
 async function deletar(req, res) {
   const { id } = req.params
 

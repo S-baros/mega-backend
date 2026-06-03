@@ -1,8 +1,6 @@
-// src/controllers/projects.controller.js
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
-// GET /projects
 async function listar(req, res) {
   const { status } = req.query
 
@@ -18,22 +16,16 @@ async function listar(req, res) {
   return res.json(projects)
 }
 
-// GET /projects/:id
 async function buscarPorId(req, res) {
   const { id } = req.params
   const project = await prisma.project.findUnique({
     where: { id: Number(id) },
-    include: {
-      allocations: {
-        include: { member: true },
-      },
-    },
+    include: { allocations: { include: { member: true } } },
   })
   if (!project) return res.status(404).json({ error: 'Projeto não encontrado.' })
   return res.json(project)
 }
 
-// POST /projects
 async function criar(req, res) {
   const { name, description, status, startDate, endDate } = req.body
 
@@ -58,7 +50,6 @@ async function criar(req, res) {
   return res.status(201).json(project)
 }
 
-// PUT /projects/:id
 async function atualizar(req, res) {
   const { id } = req.params
   const { name, description, status, startDate, endDate } = req.body
@@ -79,7 +70,6 @@ async function atualizar(req, res) {
   return res.json(project)
 }
 
-// DELETE /projects/:id
 async function deletar(req, res) {
   const { id } = req.params
 

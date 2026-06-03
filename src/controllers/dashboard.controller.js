@@ -1,8 +1,6 @@
-// src/controllers/dashboard.controller.js
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
-// GET /dashboard
 async function getDashboard(req, res) {
   const [
     totalMembros,
@@ -11,20 +9,12 @@ async function getDashboard(req, res) {
     membrosMaisAlocados,
     projetosComPrazo,
   ] = await Promise.all([
-
-    // Total de membros
     prisma.member.count(),
-
-    // Total de projetos
     prisma.project.count(),
-
-    // Projetos agrupados por status
     prisma.project.groupBy({
       by: ['status'],
       _count: { status: true },
     }),
-
-    // Top 5 membros com mais alocações
     prisma.member.findMany({
       take: 5,
       include: {
@@ -32,8 +22,6 @@ async function getDashboard(req, res) {
       },
       orderBy: { allocations: { _count: 'desc' } },
     }),
-
-    // Projetos ativos com prazo nos próximos 30 dias
     prisma.project.findMany({
       where: {
         status: 'Ativo',
@@ -49,13 +37,11 @@ async function getDashboard(req, res) {
     }),
   ])
 
-  // Formata projetos por status para facilitar no front
   const statusMap = {}
   projetosPorStatus.forEach(({ status, _count }) => {
     statusMap[status] = _count.status
   })
 
-  // Soma carga horária total por membro
   const membrosCargaTotal = membrosMaisAlocados.map((m) => ({
     id: m.id,
     name: m.name,

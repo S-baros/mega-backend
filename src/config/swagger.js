@@ -1,15 +1,14 @@
-// src/config/swagger.js
 const swaggerJsdoc = require('swagger-jsdoc')
 
 const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Mega Jr. — API de Gestão de Projetos',
+      title: 'mega-projeto API',
       version: '1.0.0',
-      description: 'Documentação da API REST do Sistema de Gestão de Projetos e Alocação de Membros da Mega Jr.',
+      description: 'API REST do Sistema de Gestão de Projetos e Alocação de Membros',
     },
-    servers: [{ url: 'http://localhost:3000', description: 'Servidor local' }],
+    servers: [{ url: 'http://localhost:3000' }],
     components: {
       securitySchemes: {
         bearerAuth: {
@@ -21,7 +20,7 @@ const options = {
     },
     security: [{ bearerAuth: [] }],
   },
-  apis: ['./src/routes/*.js'], // lê as anotações JSDoc das rotas
+  apis: ['./src/routes/*.js'],
 }
 
 module.exports = swaggerJsdoc(options)
